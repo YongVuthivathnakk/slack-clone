@@ -93,7 +93,7 @@ function SignUpCard({ setState }: SignUpCardProps) {
             onClick={() => setState("signIn")}
             className="text-sky-700 hover:underline cursor-pointer"
           >
-            Sign ip
+            Sign up
           </span>
         </p>
       </CardContent>

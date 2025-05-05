@@ -72,7 +72,7 @@ function SignInCard( {setState}: SignInCardProps ) {
         </div>
 
         <p className='text-xs text-muted-foreground'>
-          Don&apos;t have an account? <span onClick={() => setState("signUp")} className='text-sky-700 hover:underline cursor-pointer'>Sign up</span>
+          Don&apos;t have an account? <span onClick={() => setState("signUp")} className='text-sky-700 hover:underline cursor-pointer'>Sign in</span>
         </p>
       </CardContent>
     </Card>
