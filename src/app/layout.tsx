@@ -5,6 +5,7 @@ import "./globals.css";
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import { CreateWorkspaceModal } from "@/features/workspaces/component/create-workspace-modal";
 import { Modals } from "@/components/modal";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ConvexClientProvider>
+            <Toaster />
             <Modals />
             {children}
           </ConvexClientProvider>
