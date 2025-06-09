@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import "./globals.css";
-import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import { CreateWorkspaceModal } from "@/features/workspaces/component/create-workspace-modal";
+
+
+import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import { Modals } from "@/components/modal";
 import { Toaster } from "sonner";
+import { JotaiProvider } from "@/providers/jotai-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +37,11 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ConvexClientProvider>
-            <Toaster />
-            <Modals />
-            {children}
+            <JotaiProvider>
+              <Toaster />
+              <Modals />
+              {children}
+            </JotaiProvider>
           </ConvexClientProvider>
         </body>
       </html>
