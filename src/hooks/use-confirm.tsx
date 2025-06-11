@@ -26,8 +26,7 @@ export const useConfirm = (
     handleClose();
   }
 
-  const confirmDialog = () => {
-    return (
+  const confirmDialog = () => (
       <Dialog open={promise !== null}>
         <DialogContent>
           <DialogHeader>
@@ -54,7 +53,6 @@ export const useConfirm = (
         </DialogContent>
       </Dialog>
     )
-  }
 
   return [confirmDialog, confirm];
 }
