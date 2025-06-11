@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useRemoveWorkspace } from '@/features/workspaces/api/use-remove-workspace';
 import { useUpdateWorkspace } from '@/features/workspaces/api/use-update-workspace';
-import useConfirm from '@/hooks/use-confirm';
+import { useConfirm } from '@/hooks/use-confirm';
 
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -57,6 +57,7 @@ export const PreferencesModal = ({
 
     const handleRemove = async () => {
         const ok = await confirm();
+
         if(!ok) {
             return
         };
@@ -76,7 +77,7 @@ export const PreferencesModal = ({
 
     return (
         <>
-            <ConfirmDialog />
+            {ConfirmDialog()}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className='p-0 bg-gray-50 overflow-hidden'>
                     <DialogHeader className='p-4 border-b bg-white'>
@@ -144,7 +145,6 @@ export const PreferencesModal = ({
                             <p className='text-sm font-semibold'>Delete workspace</p>
                         </button>
                     </div>
-
                 </DialogContent>
             </Dialog>
         </>

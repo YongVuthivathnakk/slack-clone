@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogTitle, DialogContent, DialogDescription, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import React, { JSX, useState } from 'react'
 
-const useConfirm = (
+export const useConfirm = (
   title: string,
   message: string,
 ):  [() => JSX.Element, () => Promise<unknown>] => { // what it will return
@@ -26,35 +26,35 @@ const useConfirm = (
     handleClose();
   }
 
-  const confirmDialog = () => (
-    <Dialog>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            {title}
-          </DialogTitle>
-          <DialogDescription>
-            {message}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button
-            onClick={handleCancel}
-            variant={'outline'}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleConfirm}
-          >
-            Confirm
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+  const confirmDialog = () => {
+    return (
+      <Dialog open={promise !== null}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {title}
+            </DialogTitle>
+            <DialogDescription>
+              {message}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              onClick={handleCancel}
+              variant={'outline'}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirm}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   return [confirmDialog, confirm];
 }
-
-export default useConfirm;
