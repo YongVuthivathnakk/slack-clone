@@ -60,7 +60,7 @@ export const get = query({
         .withIndex("by_user_id", (q) => q.eq("userId", userId))
         .collect();
       const workspaceIds = members.map((member) => member.workspaceId);
-      const workspaces = [];
+      const workspaces: any[] | PromiseLike<any[]> = [];
 
       for (const workspaceId of workspaceIds) {
         const workspace = await ctx.db.get(workspaceId)
@@ -97,3 +97,71 @@ export const getById = query({
   },
 });
 
+export const update = mutation  ({
+  args: {
+    id: v.id("workspaces"),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await auth.getUserId(ctx);
+    if(!userId) {
+      throw new Error("Unauthorized");
+    }
+  
+    // Find the member who has the admin role
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId),
+      )
+      .unique();
+    if(!member || member.role !== "admin" ) {
+      throw new Error("Unauthorized");
+    }
+    await ctx.db.patch(args.id, {
+      name: args.name,
+    });
+
+    return args.id;
+  },
+});
+
+
+export const remove = mutation  ({
+  args: {
+    id: v.id("workspaces"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await auth.getUserId(ctx);
+    if(!userId) {
+      throw new Error("Unauthorized");
+    }
+  
+    // Find the member who has the admin role
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId),
+      )
+      .unique();
+    if(!member || member.role !== "admin" ) {
+      throw new Error("Unauthorized");
+    }
+
+    // Make sure to delete the member that associate with the workspace_id
+    const [members] = await Promise.all([ 
+      ctx.db
+        .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect()
+      ]); // Find all members that is inside of this workspace_id
+
+    for(const member of members) {
+      await ctx.db.delete(member._id);
+    }
+
+    await ctx.db.delete(args.id);
+
+    return args.id;
+  },
+});
